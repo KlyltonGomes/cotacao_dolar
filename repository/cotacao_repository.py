@@ -1,13 +1,14 @@
 from repository.conector_sql import SQLiteConnector
 import os
 
+
 class Conectar_bd:
     def __init__(self):
-        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))        
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         self.db_path = os.path.join(base_dir, "repository", "data_base", "bd_cotacao.db")
         self.db = SQLiteConnector(self.db_path)
 
-    def salvar_bd(self, data, valor, created_at):
+    def salvar_bd(self, data, valor, origem, created_at):
         try:
             self.db.conectar()
 
@@ -15,6 +16,7 @@ class Conectar_bd:
             CREATE TABLE IF NOT EXISTS DATASET_COTACAO (
                 DATA_COTACAO TEXT PRIMARY KEY,
                 VALOR_COTACAO REAL,
+                ORIGEM TEXT,
                 SIGLA_COTACAO TEXT,
                 CREATED_AT TEXT
             )
@@ -27,18 +29,28 @@ class Conectar_bd:
 
             if not existe:
                 self.db.executar(
-                    "INSERT INTO DATASET_COTACAO VALUES (?, ?, ?, ?)",
-                    (data, valor, "USD", created_at)
+                    "INSERT INTO DATASET_COTACAO VALUES (?, ?, ?, ?, ?)",
+                    (data, valor, origem, "USD", created_at)
                 )
                 print("✔ Cotação salva no banco")
             else:
-                print("⚠ Cotação já existe no banco")
+                print("⚠ Registro já existe para esta data")
 
         finally:
             self.db.fechar()
 
-        
+    def buscar_ultimo_registro(self):
+        try:
+            self.db.conectar()
 
+            resultado = self.db.consultar("""
+                SELECT DATA_COTACAO, VALOR_COTACAO
+                FROM DATASET_COTACAO
+                ORDER BY DATA_COTACAO DESC
+                LIMIT 1
+            """)
 
+            return resultado
 
-
+        finally:
+            self.db.fechar()

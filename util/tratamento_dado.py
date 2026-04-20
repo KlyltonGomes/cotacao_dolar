@@ -16,9 +16,9 @@ class Tratamento:
         data_api = Data_api().data_consulta()
 
         #teste manual
-        data_api_ = '04-15-2026'
+        #data_api_ = '04-18-2026'
 
-        self.url_final = f"{url_api}/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='{data_api_}'&$format=json"
+        self.url_final = f"{url_api}/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='{data_api}'&$format=json"
         return self.url_final
     
     def __str__(self):
@@ -31,4 +31,4 @@ if __name__ == "__main__":
     t.processar()
     print(f"Teste de URL: {t}")
 
-#https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='04-15-2026'&$format=json
+#https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='04-20-2026'&$format=json

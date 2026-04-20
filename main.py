@@ -15,13 +15,13 @@ def iniciar_programa():
     valor = resultado["valor"]
     data = resultado["data"]
     created_at = resultado["created_at"]
+    origem = resultado["origem"] 
 
     print(f"Valor: R$ {valor:.4f}")
     print(f"Info: {resultado['mensagem']}")
 
     repository = Conectar_bd()
-    repository.salvar_bd(data, valor , created_at)
-
+    repository.salvar_bd(data, valor, origem, created_at)
 
 
 if __name__ == "__main__":
