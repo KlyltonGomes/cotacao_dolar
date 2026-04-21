@@ -22,9 +22,7 @@ class CotacaoService:
             hoje = datetime.now().strftime("%Y-%m-%d")
             agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            # =========================
-            # ✔ 1. API (dia útil)
-            # =========================
+            # API
             if response.status_code == 200:
                 dados = response.json()
 
@@ -41,21 +39,18 @@ class CotacaoService:
                         "mensagem": "Obtido via API"
                     }
 
-            # =========================
-            # ❌ 2. FALLBACK (fim de semana/feriado)
-            # =========================
+            # FALLBACK
             repository = Conectar_bd()
             ultimo = repository.buscar_ultimo_registro()
 
             if ultimo:
                 row = ultimo[0]
-
                 valor = row[1] if not isinstance(row, dict) else row["VALOR_COTACAO"]
 
                 return {
                     "sucesso": True,
                     "valor": valor,
-                    "data": hoje,  # 👈 REGISTRA HOJE
+                    "data": hoje,
                     "origem": "FALLBACK",
                     "created_at": agora,
                     "mensagem": "Fallback com último valor válido"
@@ -71,11 +66,11 @@ class CotacaoService:
                 "sucesso": False,
                 "mensagem": f"Erro interno no Service: {e}"
             }
-        
+
+
 class CotacaoCsvWriter:
 
     def salvar(self, data, valor, origem, created_at):
-        
         arquivo_existe = os.path.exists(caminho_csv)
 
         with open(caminho_csv, "a", newline="") as file:
@@ -91,3 +86,7 @@ class CotacaoCsvWriter:
                 ])
 
             writer.writerow([data, valor, origem, "USD", created_at])
+
+        print("✔ Registro salvo no CSV")
+
+        return True
