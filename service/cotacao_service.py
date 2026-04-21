@@ -1,7 +1,13 @@
 from datetime import datetime
+import os
+import csv
 from requests import get
 from repository.cotacao_repository import Conectar_bd
 from util.tratamento_dado import Tratamento
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+caminho_csv = BASE_DIR / "repository" / "data_base" / "cotacao.csv"
 
 
 class CotacaoService:
@@ -65,3 +71,23 @@ class CotacaoService:
                 "sucesso": False,
                 "mensagem": f"Erro interno no Service: {e}"
             }
+        
+class CotacaoCsvWriter:
+
+    def salvar(self, data, valor, origem, created_at):
+        
+        arquivo_existe = os.path.exists(caminho_csv)
+
+        with open(caminho_csv, "a", newline="") as file:
+            writer = csv.writer(file)
+
+            if not arquivo_existe:
+                writer.writerow([
+                    "DATA_COTACAO",
+                    "VALOR_COTACAO",
+                    "ORIGEM",
+                    "SIGLA_COTACAO",
+                    "CREATED_AT"
+                ])
+
+            writer.writerow([data, valor, origem, "USD", created_at])

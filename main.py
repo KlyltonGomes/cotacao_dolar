@@ -1,4 +1,4 @@
-from service.cotacao_service import CotacaoService
+from service.cotacao_service import CotacaoCsvWriter, CotacaoService
 from repository.cotacao_repository import Conectar_bd
 
 
@@ -15,13 +15,22 @@ def iniciar_programa():
     valor = resultado["valor"]
     data = resultado["data"]
     created_at = resultado["created_at"]
-    origem = resultado["origem"] 
+    origem = resultado["origem"]
 
     print(f"Valor: R$ {valor:.4f}")
     print(f"Info: {resultado['mensagem']}")
 
+    # salva no banco
     repository = Conectar_bd()
-    repository.salvar_bd(data, valor, origem, created_at)
+    salvou = repository.salvar_bd(data, valor, origem, created_at)
+
+    # só salva no CSV se salvou no banco
+    if not salvou:
+        print("Registro já existe, não será salvo no CSV.")
+        return
+
+    csv_writer = CotacaoCsvWriter()
+    csv_writer.salvar(data, valor, origem, created_at)
 
 
 if __name__ == "__main__":
