@@ -54,3 +54,21 @@ class Conectar_bd:
 
         finally:
             self.db.fechar()
+
+    #usado na API
+    #http://127.0.0.1:8001/cotacao/2026-04-22 
+    def buscar_por_data(self, data):
+        try:
+            self.db.conectar()
+
+            resultado = self.db.consultar("""
+                SELECT DATA_COTACAO, VALOR_COTACAO, ORIGEM
+                FROM DATASET_COTACAO
+                WHERE DATA_COTACAO = ?
+            """, (data,))
+
+            # pode vir lista ou tuple dependendo do seu connector
+            return resultado[0] if resultado else None
+
+        finally:
+            self.db.fechar()
