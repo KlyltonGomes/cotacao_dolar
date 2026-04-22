@@ -3,8 +3,8 @@ from repository.cotacao_repository import Conectar_bd
 from service.cotacao_service import CotacaoService
 
 router = APIRouter()
-
-@router.get("/cotacao/hoje")
+#http://127.0.0.1:8001/cotacao/fechamento
+@router.get("/cotacao/fechamento")
 def cotacao_hoje():
     service = CotacaoService()
     resultado = service.obter_valor_dolar()

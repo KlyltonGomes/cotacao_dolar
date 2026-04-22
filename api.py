@@ -9,4 +9,6 @@ app.include_router(cotacao_router)
 #matar aplicacao: pkill -f uvicorn
 #matar manual: lsof -i :8001
 #pelo PID: kill -9 9843
-#subir aplicação: uvicorn api:app --reload --port 8001
+#subir aplicação> uvicorn api:app --reload --port 8001
+
+#http://127.0.0.1:8001/cotacao/fechamento
