@@ -1,4 +1,4 @@
-from google.cloud import storage
+""" from google.cloud import storage
 from dotenv import load_dotenv
 from pathlib import Path
 import os
@@ -27,4 +27,4 @@ def enviar_para_bucket(caminho_arquivo, nome_bucket, destino_blob):
 
     blob.upload_from_filename(caminho_arquivo)
 
-    print(f"✔ Upload concluído: {caminho_arquivo} → {nome_bucket}/{destino_blob}")
+    print(f"✔ Upload concluído: {caminho_arquivo} → {nome_bucket}/{destino_blob}") """

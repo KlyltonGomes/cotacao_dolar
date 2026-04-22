@@ -1,6 +1,6 @@
 from service.cotacao_service import CotacaoCsvWriter, CotacaoService
 from repository.cotacao_repository import Conectar_bd
-from util.enviar_bucket import enviar_para_bucket
+#from util.enviar_bucket import enviar_para_bucket
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -26,23 +26,26 @@ def iniciar_programa():
     print(f"Info: {resultado['mensagem']}")
 
     # banco
-    repository = Conectar_bd()
-    salvou = repository.salvar_bd(data, valor, origem, created_at)
+    cotacao_repository = Conectar_bd()
+    salvou = cotacao_repository.salvar_bd(data, valor, origem, created_at)
 
     if not salvou:
-        print("Registro já existe, não será salvo no CSV.")
-        return
+        print("Registro já existe no banco (ok).")
 
     # CSV
     csv_writer = CotacaoCsvWriter()
-    csv_writer.salvar(data, valor, origem, created_at)
+
+    if not csv_writer.data_existe(data):
+        csv_writer.salvar(data, valor, origem, created_at)
+    else:
+        print("Data já existe no CSV.")
 
     # Bucket
-    enviar_para_bucket(
+    """ enviar_para_bucket(
         caminho_csv,
         "meu-bucket",
         "cotacao/cotacao.csv"
-    )
+    ) """
 
 
 if __name__ == "__main__":

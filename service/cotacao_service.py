@@ -5,6 +5,7 @@ from requests import get
 from repository.cotacao_repository import Conectar_bd
 from util.tratamento_dado import Tratamento
 from pathlib import Path
+from util.tratamento_data import Data_api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 caminho_csv = BASE_DIR / "repository" / "data_base" / "cotacao.csv"
@@ -19,8 +20,12 @@ class CotacaoService:
             url_final = self.tratamento.processar()
             response = get(url_final)
 
+            #hoje = Data_api()
+            #hoje = hoje.data_consulta()
+
             hoje = datetime.now().strftime("%Y-%m-%d")
             agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 
             # API
             if response.status_code == 200:
@@ -70,10 +75,24 @@ class CotacaoService:
 
 class CotacaoCsvWriter:
 
+    def data_existe(self, data):
+        if not os.path.exists(caminho_csv):
+            return False
+
+        with open(caminho_csv, "r", newline="", encoding="utf-8") as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                # ⚠️ aqui usa o nome correto da coluna
+                if row["DATA_COTACAO"] == data:
+                    return True
+
+        return False
+
     def salvar(self, data, valor, origem, created_at):
         arquivo_existe = os.path.exists(caminho_csv)
 
-        with open(caminho_csv, "a", newline="") as file:
+        with open(caminho_csv, "a", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
 
             if not arquivo_existe:

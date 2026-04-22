@@ -41,6 +41,7 @@ pyasn1_modules==0.4.2
 pycparser==3.0
 Pygments==2.20.0
 python-dateutil==2.9.0.post0
+python-dotenv==1.2.2
 pyzmq==27.1.0
 requests==2.33.1
 six==1.17.0
