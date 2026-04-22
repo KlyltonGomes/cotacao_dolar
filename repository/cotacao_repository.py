@@ -32,9 +32,9 @@ class Conectar_bd:
                     "INSERT INTO DATASET_COTACAO VALUES (?, ?, ?, ?, ?)",
                     (data, valor, origem, "USD", created_at)
                 )
-                print("✔ Cotação salva no banco")
-            else:
-                print("⚠ Registro já existe para esta data")
+                return True  # ✔ salvou
+
+            return False  # ❌ já existe
 
         finally:
             self.db.fechar()

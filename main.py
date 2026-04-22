@@ -29,7 +29,9 @@ def iniciar_programa():
     cotacao_repository = Conectar_bd()
     salvou = cotacao_repository.salvar_bd(data, valor, origem, created_at)
 
-    if not salvou:
+    if salvou:
+        print("Cotação salva no banco")
+    else:
         print("Registro já existe no banco (ok).")
 
     # CSV
