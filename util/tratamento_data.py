@@ -7,7 +7,7 @@ class Data_api:
     def data_consulta(self):
         # Pegar a data atual
         hoje = date.today()
-
+        
         # Formatar para o padrão que a API do Banco Central exige (MM-DD-AAAA)
         self.data_formatada = hoje.strftime('%m-%d-%Y')
 

@@ -20,7 +20,7 @@ class CotacaoService:
             url_final = self.tratamento.processar()
             response = get(url_final)
 
-
+            
             hoje = datetime.now().strftime("%Y-%m-%d")
             agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
